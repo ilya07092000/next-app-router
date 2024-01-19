@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import ThemeRegistry from './ThemeRegistry';
+import CssBaseline from '@mui/material/CssBaseline';
+import { Container } from '@mui/material';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,7 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <ThemeRegistry options={{ key: 'mui' }}>{children}</ThemeRegistry>
+        <CssBaseline />
+        <ThemeRegistry options={{ key: 'mui' }}>
+          <Container maxWidth="md">{children}</Container>
+        </ThemeRegistry>
       </body>
     </html>
   );
