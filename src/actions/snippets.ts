@@ -25,4 +25,38 @@ const deleteSnippet = async (id: number) => {
   redirect('/');
 };
 
-export { updateSnippet, deleteSnippet };
+async function createSnippet(formState: { message: string }, formData: FormData) {
+  try {
+    const title = formData.get('title') as string;
+    const code = formData.get('code') as string;
+
+    if (!title.trim() || !code.trim()) {
+      return {
+        message: 'Both Title And Code values should be provided!!!',
+      };
+    }
+
+    await db.snippet.create({
+      data: {
+        title,
+        code,
+      },
+    });
+
+    return {
+      message: '',
+    };
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      return {
+        message: e.message,
+      };
+    } else {
+      return {
+        message: 'Smth Went Wrong!',
+      };
+    }
+  }
+}
+
+export { updateSnippet, deleteSnippet, createSnippet };

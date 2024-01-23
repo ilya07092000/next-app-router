@@ -1,27 +1,21 @@
+'use client';
+
+import { useFormState } from 'react-dom';
 import { Button, TextField, Typography, Container } from '@mui/material';
-import { db } from '@/db';
+import { createSnippet } from '@/actions/snippets';
 
 export default function SnippetCreatePage() {
-  // Server action
-  async function createSnippet(formData: FormData) {
-    'use server';
-    const title = formData.get('title') as string;
-    const code = formData.get('code') as string;
-
-    await db.snippet.create({
-      data: {
-        title,
-        code,
-      },
-    });
-  }
+  const [formState, action] = useFormState(createSnippet, { message: '' });
 
   return (
     <Container sx={{ pt: 5 }}>
       <Typography sx={{ mb: 2 }} variant="h3">
         Create A Snippet
       </Typography>
-      <form action={createSnippet}>
+      <Typography component="p" sx={{ color: 'red' }}>
+        {formState?.message}
+      </Typography>
+      <form action={action}>
         <TextField sx={{ mb: 3 }} label="Title" variant="outlined" fullWidth name="title" id="title" />
         <TextField label="Code" multiline rows={10} fullWidth name="code" id="code" />
         <Button sx={{ mt: 2, minWidth: '160px' }} variant="outlined" type="submit">
